@@ -1,0 +1,38 @@
+/* Submission desk: the same homemade site, with only one job to do. */
+.submission-site { max-width: 760px; }
+.submission-site .masthead { min-height: 128px; gap: 14px; padding: 17px 8px; }
+.submission-site .wordmark { font-size: 42px; letter-spacing: -1.5px; }
+.submission-site .header-bug { width: 52px; height: 52px; }
+.submission-site .brand-kicker { font-size: 10px; letter-spacing: 0; }
+.submission-site .tagline { font-size: 19px; }
+.submission-site .dispatch { margin-bottom: 7px; font-size: 11px; }
+.submission-main { background: #ffffd0; }
+.submission-main .panel-title { background: #366326; }
+.submission-body { padding: 20px 38px 22px; }
+.submission-intro { text-align: center; padding-bottom: 13px; border-bottom: 2px groove #e4dfa0; }
+.submission-intro .new-sticker { display: inline-block; vertical-align: middle; margin-right: 8px; }
+.submission-intro h1 { display: inline; color: #920000; font-style: italic; }
+.submission-intro p { margin-top: 9px; font-size: 14px; }
+.submission-site .form-pair { grid-template-columns: minmax(0,1fr) 160px; }
+.submission-site label { margin-top: 15px; }
+.submission-site input, .submission-site select, .submission-site textarea { min-height: 40px; font-size: 14px; }
+.privacy-note { font-size: 12px; margin-top: 12px; }
+.submission-site .save { width: 190px; min-height: 42px; margin: 17px auto 0; font-weight: bold; }
+.submission-site .form-note { text-align: center; }
+#confirmation { text-align: center; padding: 32px 0; }
+#confirmation img { image-rendering: pixelated; }
+#confirmation h1 { margin: 10px 0 16px; }
+#confirmation p { font-size: 15px; }
+#confirmation .success-joke { margin-top: 20px; font-style: italic; }
+#another { margin-top: 24px; }
+@media (max-width: 650px) {
+  .submission-site .masthead { gap: 4px; min-height: 115px; }
+  .submission-site .header-bug { width: 28px; height: 28px; }
+  .submission-site .wordmark { font-size: clamp(24px, 7.3vw, 42px); letter-spacing: -1px; }
+  .submission-site .brand-kicker { font-size: 8px; }
+  .submission-site .tagline { font-size: 16px; }
+  .submission-body { padding: 18px 14px; }
+  .submission-site .form-pair { grid-template-columns: minmax(0,1fr) 106px; }
+  .submission-site input, .submission-site select, .submission-site textarea { font-size: 16px; min-height: 44px; }
+  .submission-site .save { width: 100%; min-height: 44px; }
+}

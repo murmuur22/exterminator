@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>WE EXTERMINATOR :: Report a bug!</title>
+  <link rel="icon" href="/static/pixel-bug.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="stylesheet" href="/static/submission.css">
+  <script defer src="/static/submission.js"></script>
+</head>
+<body>
+<a class="skip" href="#report-form">Skip to report form</a>
+<div class="site submission-site">
+  <header>
+    <div class="utility"><span>WE Exterminator · Report-a-bug hotline</span><strong>LOCAL PROTOTYPE · NO LOGIN YET</strong></div>
+    <div class="masthead">
+      <img class="header-bug" src="/static/pixel-bug.svg" width="64" height="64" alt="An unwelcome pixel bug">
+      <div class="brand"><p class="brand-kicker">★ PROFESSIONAL HOMELAB PEST CONTROL ★</p><div class="wordmark">WE EXTERMINATOR</div><p class="tagline">Your bugs are our business!</p></div>
+      <img class="header-bug flipped" src="/static/pixel-bug.svg" width="64" height="64" alt="">
+    </div>
+    <div class="dispatch"><span>★★★ SPOTTED SOMETHING CREEPY? ★★★</span><span>No actual insects required.</span></div>
+  </header>
+  <main class="submission-main">
+    <p class="panel-title">:: Leave a report for your homelab admins ::</p>
+    <div class="submission-body">
+      <section id="form-section" aria-labelledby="form-heading">
+        <div class="submission-intro"><span class="new-sticker">SQUISH!</span><h1 id="form-heading">Eek! A bug!</h1><p>Something broken? Something annoying? An idea worth keeping?<br><b>Tell us about it. We'll take it from here.</b></p></div>
+        <form id="report-form">
+          <label for="title">What happened? <span class="required">(required)</span></label>
+          <input id="title" name="title" required maxlength="180" placeholder="e.g. The video stops when I skip ahead" autocomplete="off">
+          <div class="form-pair">
+            <div><label for="service">Service / project <span class="optional">(optional)</span></label><input id="service" name="service" maxlength="80" placeholder="e.g. Jellyfin"></div>
+            <div><label for="kind">Kind</label><select id="kind" name="kind"><option value="bug">Bug</option><option value="feedback">Feedback</option><option value="idea">Idea</option></select></div>
+          </div>
+          <label for="detail">Details <span class="optional">(optional)</span></label>
+          <textarea id="detail" name="detail" maxlength="10000" rows="4" placeholder="What were you doing? What did you expect to happen?"></textarea>
+          <p class="privacy-note"><b>For the admins' eyes:</b> Your report goes to the private admin inbox. This page doesn't show any reports. Please leave out passwords and other secrets.</p>
+          <button class="save" type="submit">Send report <span aria-hidden="true">»</span></button>
+          <p class="form-note">A title is enough. No account details needed in this local prototype.</p>
+          <p id="send-error" class="error" role="alert" hidden></p>
+          <noscript><p class="error">JavaScript is required to send this prototype form. Your report has not been sent.</p></noscript>
+        </form>
+      </section>
+      <section id="confirmation" aria-labelledby="success-heading" hidden>
+        <img src="/static/pixel-bug.svg" width="64" height="64" alt="">
+        <h1 id="success-heading" tabindex="-1">Report received!</h1>
+        <p>Your report is saved in the admin inbox for review.<br>You can close this page and get back to what you were doing.</p>
+        <p class="success-joke">Another bug on the books. The exterminator thanks you.</p>
+        <button id="another" type="button">Send another report</button>
+      </section>
+    </div>
+    <div class="ticket-bottom">CAPTURE THE BUG. CARRY ON WITH YOUR DAY.<br><small>No sprays. No fumes. Just a little HTML.</small></div>
+  </main>
+  <footer>
+    <div class="badges"><span class="web-badge html-badge"><b>&lt;/&gt;</b><span>PLAIN OLD<br><strong>HTML + CSS</strong></span></span><span class="web-badge bug-badge"><img src="/static/pixel-bug.svg" width="24" height="24" alt=""><span>BUGS NOT<br><strong>WELCOME</strong></span></span><span class="web-badge local-badge"><b>⌂</b><span>HAPPILY<br><strong>SELF-HOSTED</strong></span></span></div>
+    <p>WE EXTERMINATOR · Submission desk · Prototype v{{ version }}</p>
+    <p class="footer-note">Best viewed with your eyes. Preferably open.</p>
+  </footer>
+</div>
+</body>
+</html>

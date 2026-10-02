@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>WE EXTERMINATOR :: Your bugs are our business!</title>
+  <link rel="icon" href="/static/pixel-bug.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/static/style.css">
+  <script defer src="/static/app.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to reports</a>
+<div class="site">
+  <header>
+    <div class="utility"><span>You've reached the WE Exterminator home page!</span><strong>LOCAL PROTOTYPE · NO LOGIN YET</strong></div>
+    <div class="masthead">
+      <img class="header-bug" src="/static/pixel-bug.svg" alt="A very unwelcome pixel bug" width="80" height="80">
+      <div class="brand"><p class="brand-kicker">★ PROFESSIONAL HOMELAB PEST CONTROL ★</p><div class="wordmark">WE EXTERMINATOR</div><p class="tagline">Your bugs are our business!</p></div>
+      <img class="header-bug flipped" src="/static/pixel-bug.svg" alt="" width="80" height="80">
+    </div>
+    <div class="welcome"><b>Welcome to our little corner of the infestation.</b><br>Got a bug? A bad idea? A service acting funny? You've come to the right web site.</div>
+    <div class="dispatch"><span>★★★ NOW ACCEPTING BUG REPORTS ★★★</span><span>No appointment necessary. No actual pesticides.</span></div>
+  </header>
+  <div class="workspace">
+    <aside class="sidebar" aria-label="Report views">
+      <p class="panel-title">:: Site directory ::</p>
+      <p class="sidebar-intro">Where would you<br>like to go?</p>
+      <nav id="views">
+        <button data-view="inbox" class="active" aria-pressed="true"><span>Inbox</span><span id="count-inbox">0</span></button>
+        <button data-view="in_progress" aria-pressed="false"><span>In progress</span><span id="count-in_progress">0</span></button>
+        <button data-view="resolved" aria-pressed="false"><span>Resolved</span><span id="count-resolved">0</span></button>
+        <button data-view="all" aria-pressed="false"><span>All reports</span><span id="count-all">0</span></button>
+      </nav>
+      <hr>
+      <a class="export" href="/api/export">Export reports <span aria-hidden="true">↓</span></a>
+      <p class="storage-note">Take your bugs with you!<br>(Downloads a JSON backup.)</p>
+      <div class="sidebar-note"><img src="/static/pixel-bug.svg" alt="" width="64" height="64"><h2>DON'T PANIC!</h2><p>Get it out of your head<br>and onto the list.</p><small>One bug at a time.</small></div>
+      <div class="construction"><span aria-hidden="true">▲</span><b>ALWAYS UNDER<br>EXTERMINATION</b></div>
+      <p class="webmaster-note">A lovingly hand-coded<br>place for things that broke.</p>
+    </aside>
+    <main id="main">
+      <p class="panel-title">:: The extermination desk ::</p>
+      <div class="main-body">
+        <div class="section-heading"><div><p class="eyebrow">HOMELAB INCIDENT DEPARTMENT</p><h1 id="view-title">Inbox</h1></div><button class="primary new-report" id="new-report">New report <span aria-hidden="true">»</span></button></div>
+        <p class="section-description" id="view-description">Open calls and work in progress. Nothing to keep in your head.</p>
+        <div class="filters"><label class="search-label"><span class="sr-only">Search reports</span><input id="search" type="search" placeholder="Search reports…"></label><label><span class="sr-only">Filter by service</span><select id="service-filter"><option value="">All services</option></select></label></div>
+        <div class="list-heading"><span>FILED REPORTS</span><span id="results-count" aria-live="polite">Loading…</span></div>
+        <div id="reports" aria-label="Reports"><p class="empty">Loading reports…</p></div>
+        <p class="list-footnote"><b>Webmaster's note:</b> Click a report title to edit it or change its status. Resolved doesn't mean deleted!</p>
+        <p id="load-error" role="alert" hidden></p><button id="retry" hidden>Retry loading reports</button>
+        <div class="desk-stamp" aria-hidden="true">[ BUGS CHECK IN. THEY DON'T CHECK OUT.* ]<small>*Actually, you can reopen them. We're reasonable.</small></div>
+      </div>
+    </main>
+    <section class="capture" aria-labelledby="capture-heading">
+      <div class="panel-title">:: Report-a-bug form ::</div>
+      <div class="capture-body">
+        <div class="form-heading"><span class="new-sticker">NEW!</span><h2 id="capture-heading">Eek! A bug!</h2></div>
+        <p class="capture-intro">Don't just sit there. <b>Tell the exterminator.</b><br>A title is enough; the rest can wait.</p>
+        <form id="capture-form">
+          <label for="title">What happened? <span class="required">(required)</span></label><input id="title" name="title" required maxlength="180" placeholder="Give the issue a short title" autocomplete="off">
+          <div class="form-pair"><div><label for="service">Service / project</label><input id="service" name="service" maxlength="80" placeholder="e.g. Jellyfin" list="services"><datalist id="services"></datalist></div><div><label for="kind">Kind</label><select id="kind" name="kind"><option value="bug">Bug</option><option value="feedback">Feedback</option><option value="idea">Idea</option></select></div></div>
+          <label for="detail">Details <span class="optional">(optional)</span></label><textarea id="detail" name="detail" rows="4" maxlength="10000" placeholder="What were you doing? What went wrong?"></textarea>
+          <button class="primary save" type="submit">Save report <span aria-hidden="true">»</span></button>
+          <p class="form-note">Saved as Open, on this machine.<br>No report is sent to anyone.</p>
+          <p id="capture-error" class="error" role="alert" hidden></p>
+        </form>
+      </div>
+      <div class="ticket-bottom">100% HOME-GROWN BUG REPORTS<br><small>Zero cloud. Zero insecticide. Probably some bugs.</small></div>
+    </section>
+  </div>
+  <footer>
+    <div class="badges" aria-label="Site badges"><span class="web-badge html-badge"><b>&lt;/&gt;</b><span>PLAIN OLD<br><strong>HTML + CSS</strong></span></span><span class="web-badge bug-badge"><img src="/static/pixel-bug.svg" width="24" height="24" alt=""><span>BUGS NOT<br><strong>WELCOME</strong></span></span><span class="web-badge local-badge"><b>⌂</b><span>HAPPILY<br><strong>SELF-HOSTED</strong></span></span></div>
+    <p>Best viewed with your eyes. Preferably open.</p>
+    <p>WE EXTERMINATOR · Local prototype v{{ version }} · No login yet.</p>
+    <p class="footer-note">This site is under construction. The bugs are not a design feature.</p>
+  </footer>
+</div>
+<div id="notice" role="status" aria-live="polite"></div>
+<dialog id="editor" aria-labelledby="edit-heading">
+  <form id="edit-form">
+    <div class="edit-head"><div><p class="eyebrow" id="edit-number">WORK ORDER</p><h2 id="edit-heading">Report details</h2></div><button type="button" id="close-editor" aria-label="Close report">X</button></div>
+    <label for="edit-title">Report title</label><input id="edit-title" name="title" required maxlength="180">
+    <div class="form-pair"><div><label for="edit-service">Service / project</label><input id="edit-service" name="service" maxlength="80"></div><div><label for="edit-kind">Kind</label><select id="edit-kind" name="kind"><option value="bug">Bug</option><option value="feedback">Feedback</option><option value="idea">Idea</option></select></div></div>
+    <label for="edit-detail">Details</label><textarea id="edit-detail" name="detail" rows="5" maxlength="10000"></textarea>
+    <label for="edit-status">Status</label><select id="edit-status" name="status"><option value="open">Open</option><option value="in_progress">In progress</option><option value="resolved">Resolved</option></select>
+    <p class="form-note">Resolved reports are kept. Set back to Open to reopen.</p><p id="edit-dates" class="form-note"></p>
+    <p id="edit-error" class="error" role="alert" hidden></p>
+    <div class="edit-actions"><button type="button" id="cancel-editor">Cancel</button><button type="submit" class="primary">Save changes</button></div>
+  </form>
+</dialog>
+</body>
+</html>

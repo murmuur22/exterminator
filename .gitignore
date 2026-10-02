@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+.pytest_cache/
+data/
+*.sqlite3
+*.sqlite3-*
+.env
+artifacts/
+.DS_Store
+# Private planning / local evidence, never publish.
+PROJECT_BRIEF.md
+VERIFICATION.md
+design-archive/
+.env.*
+*.pem
+*.key
