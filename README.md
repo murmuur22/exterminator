@@ -6,7 +6,7 @@ Exterminator is a small, self-hosted bug and feedback tracker for a homelab. Whe
 
 It looks like an extermination company made its first website in 1997. Under the tiled wallpaper and pixel bugs, it's a simple reporting form and an admin inbox.
 
-> **Working local prototype · v0.1.0.** You can run and test both interfaces today. Network deployment and Relay integration are planned, not configured or verified. The current servers accept connections only from the same computer.
+> **v0.2.0 · Native Debian 13 amd64 release.** [Download the package](https://github.com/murmuur22/exterminator/releases/tag/v0.2.0) and follow the [SSH installation guide](docs/deployment.md). Installation, reboot, update/rollback and local Relay Gateway integration were tested in a disposable Debian VM on the development laptop. Your real gateway/network configuration remains an operator responsibility.
 
 ## Two doors. One inbox.
 
@@ -94,7 +94,7 @@ Do not expose these development servers through a LAN bind, reverse proxy, tunne
 
 ## Your data
 
-Reports are stored in `data/reports.sqlite3`, created on first start and excluded from Git.
+In development mode, reports are stored in `data/reports.sqlite3`, created on first start and excluded from Git. The installed Debian service instead uses `/var/lib/exterminator/reports.sqlite3`; see the deployment guide for its paired update/rollback snapshots.
 
 - **Export:** use **Export reports** in the admin interface to download every report as JSON, regardless of current filters. There is no JSON import screen yet.
 - **Backup:** stop both listeners and copy `data/reports.sqlite3` to a private backup location.
@@ -114,8 +114,16 @@ uv run pytest -q
 
 The tests use temporary databases and local servers, including a real browser submission-to-admin workflow. They do not touch your normal reports. See [testing notes](docs/testing.md) for coverage and limitations, and the [changelog](CHANGELOG.md) for changes.
 
+## Native Debian deployment
+
+The supported packaging target is **Debian 13 amd64**, using Gunicorn and two hardened systemd service instances. Config, data, backups, and root-owned releases have separate directories. The default remains loopback-only; remote access requires an explicitly configured external access boundary.
+
+See [deployment and rollback instructions](docs/deployment.md) for release downloads, exact apt prerequisites, installing/updating over SSH, loopback same-VM Relay configuration, and explicit database/config rollback. Do not use the development servers as a production service.
+
+The [qualification report](docs/qualification.md) records the real local Debian and Relay tests and their limits. The installer never configures Relay, Tailscale, firewalls, or neighboring services.
+
 ## Project status
 
-This repository contains the prototype source, not a production deployment or packaged release. Next work is the externally enforced access boundary, Relay Gateway compatibility, and a supported deployment setup.
+v0.2.0 is the narrow operator-managed release for a protected Debian 13 amd64 homelab. It has no built-in accounts, Docker requirement or in-app updater. Live installation and gateway/network setup remain manual.
 
 A project license has not been selected yet. Public source availability is not an open-source license grant.

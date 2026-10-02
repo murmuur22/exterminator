@@ -1,9 +1,9 @@
 [project]
 name = "we-exterminator"
-version = "0.1.0"
-description = "Local-first homelab issue capture prototype"
+version = "0.2.0"
+description = "Two-surface homelab issue tracker"
 requires-python = ">=3.11"
-dependencies = ["flask>=3.1,<4"]
+dependencies = ["flask>=3.1,<4", "gunicorn>=23,<24"]
 
 [dependency-groups]
 dev = ["pytest>=8,<10", "playwright>=1.50,<2"]

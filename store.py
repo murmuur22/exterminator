@@ -10,12 +10,21 @@ class Store:
         self.path = Path(path)
         self.path.parent.mkdir(parents=True, exist_ok=True)
         with self.connection() as db:
+            version = db.execute('PRAGMA user_version').fetchone()[0]
+            tables = {row[0] for row in db.execute("SELECT name FROM sqlite_master WHERE name NOT LIKE 'sqlite_%'")}
+            columns = [tuple(row)[1:] for row in db.execute('PRAGMA table_info(reports)')]
+            expected = [('id', 'INTEGER', 0, None, 1)] + [
+                (name, 'TEXT', 1, None, 0) for name in
+                ('title', 'service', 'kind', 'detail', 'status', 'created_at', 'updated_at')]
+            if version not in (0, 1) or (tables and (tables != {'reports'} or columns != expected)) or (version == 1 and not tables):
+                raise sqlite3.DatabaseError('Unsupported schema')
             db.execute('''CREATE TABLE IF NOT EXISTS reports (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 title TEXT NOT NULL, service TEXT NOT NULL, kind TEXT NOT NULL,
                 detail TEXT NOT NULL, status TEXT NOT NULL,
                 created_at TEXT NOT NULL, updated_at TEXT NOT NULL
             )''')
+            db.execute('PRAGMA user_version=1')
 
     @contextmanager
     def connection(self):
@@ -26,6 +35,12 @@ class Store:
                 yield db
         finally:
             db.close()
+
+    def health(self):
+        with self.connection() as db:
+            if db.execute('PRAGMA user_version').fetchone()[0] != 1:
+                raise sqlite3.DatabaseError('Unsupported schema')
+            db.execute('SELECT id FROM reports LIMIT 1').fetchone()
 
     def create(self, fields):
         now = datetime.now(timezone.utc).isoformat()

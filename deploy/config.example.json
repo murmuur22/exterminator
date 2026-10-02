@@ -1,0 +1,14 @@
+{
+  "admin": {
+    "bind": "127.0.0.1",
+    "allow_nonloopback": false,
+    "allowed_peers": ["127.0.0.1"],
+    "relay_origin": ""
+  },
+  "submission": {
+    "bind": "127.0.0.1",
+    "allow_nonloopback": false,
+    "allowed_peers": ["127.0.0.1"],
+    "relay_origin": ""
+  }
+}

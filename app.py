@@ -1,6 +1,7 @@
-"""Local-only prototype. No deployment or remote authentication support yet."""
+"""Two isolated HTTP surfaces; local defaults and explicit production boundaries."""
 from pathlib import Path
 import tomllib
+import sqlite3
 
 from flask import Flask, jsonify, request, render_template
 from werkzeug.exceptions import HTTPException, BadRequest
@@ -10,17 +11,23 @@ ROOT = Path(__file__).resolve().parent
 VERSION = tomllib.loads((ROOT / 'pyproject.toml').read_text())['project']['version']
 
 
-def create_app(database=None, *, surface='admin'):
+def create_app(database=None, *, surface='admin', boundary=None):
     if surface not in ('admin', 'submission'):
         raise ValueError('Unknown application surface')
     app = Flask(__name__)
-    app.config.update(MAX_CONTENT_LENGTH=32_768, TRUSTED_HOSTS=['localhost', '127.0.0.1', '[::1]'])
+    app.config.update(MAX_CONTENT_LENGTH=32_768, TRUSTED_HOSTS=[boundary.bind] if boundary else ['localhost', '127.0.0.1', '[::1]'])
     store = Store(database or ROOT / 'data' / 'reports.sqlite3')
 
     @app.before_request
     def local_boundary():
-        if request.remote_addr not in ('127.0.0.1', '::1'):
-            return jsonify(error='This prototype accepts local connections only.'), 403
+        peers = boundary.allowed_peers if boundary else ('127.0.0.1', '::1')
+        if request.remote_addr not in peers:
+            return jsonify(error='Connection not allowed.'), 403
+        if boundary and request.host != boundary.authority:
+            return jsonify(error='Invalid Host.'), 400
+        origin = request.headers.get('Origin')
+        if origin and origin != request.host_url.rstrip('/'):
+            return jsonify(error='Cross-origin requests are not allowed.'), 403
         if request.headers.get('Sec-Fetch-Site') == 'cross-site':
             return jsonify(error='Cross-site requests are not allowed.'), 403
         if request.method in ('POST', 'PATCH', 'DELETE', 'PUT'):
@@ -33,15 +40,29 @@ def create_app(database=None, *, surface='admin'):
         response.headers['Cache-Control'] = 'no-store'
         response.headers['X-Content-Type-Options'] = 'nosniff'
         response.headers['Referrer-Policy'] = 'no-referrer'
-        response.headers['Content-Security-Policy'] = "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+        ancestors = boundary.relay_origin if boundary and boundary.relay_origin else "'none'"
+        response.headers['Content-Security-Policy'] = f"default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors {ancestors}; form-action 'self'"
         return response
+
+    @app.errorhandler(sqlite3.Error)
+    def database_error(error):
+        # Do not log SQL exceptions, parameters, or submitted report content.
+        return jsonify(error='Database unavailable.'), 503
+
+    @app.get('/healthz')
+    def health():
+        store.health()
+        return jsonify(ok=True, surface=surface, version=VERSION)
 
     @app.errorhandler(HTTPException)
     def http_error(error):
         return jsonify(error=error.description), error.code
 
     def validated_fields(creating=False):
-        fields = request.get_json()
+        try:
+            fields = request.get_json()
+        except RecursionError:
+            raise BadRequest('JSON nesting is too deep.') from None
         limits = {'title': 180, 'service': 80, 'kind': 20, 'detail': 10000, 'status': 20}
         if not isinstance(fields, dict) or not fields or set(fields) - limits.keys():
             raise BadRequest('Provide report fields as a non-empty JSON object.')
@@ -50,6 +71,10 @@ def create_app(database=None, *, surface='admin'):
         for key, value in fields.items():
             if not isinstance(value, str) or len(value) > limits[key]:
                 raise BadRequest(f'{key.capitalize()} must be text of at most {limits[key]} characters.')
+            try:
+                value.encode('utf-8', errors='strict')
+            except UnicodeEncodeError:
+                raise BadRequest('Report fields must contain valid UTF-8 text.') from None
         fields = {key: value.strip() for key, value in fields.items()}
         if 'title' in fields and not fields['title']:
             raise BadRequest('Give this report a short title.')
@@ -90,6 +115,8 @@ def create_app(database=None, *, surface='admin'):
 
     @app.patch('/api/reports/<int:report_id>')
     def update(report_id):
+        if report_id > 9223372036854775807:
+            return jsonify(error='Report not found.'), 404
         result = store.update(report_id, validated_fields())
         return jsonify(result) if result else (jsonify(error='Report not found.'), 404)
 

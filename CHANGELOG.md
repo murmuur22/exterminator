@@ -1,6 +1,18 @@
 # Changelog
 
-## Unreleased — local prototype 0.1.0
+## 0.2.0 — 2026-10-01
+
+- Added a native Debian 13 amd64 Gunicorn/systemd release path with separate admin (8741) and submission (8742) configurations; prototype entrypoints retain loopback defaults.
+- Added exact socket-peer and bind-authority checks, opt-in private IPv4 binding, exact Relay HTTPS frame ancestry, and no forwarded-header trust. External gateway/network authorization remains mandatory; no accounts or updater were added.
+- Added database-backed surface/version health checks, generic database failure responses, schema version 1 initialization/legacy-layout validation, newer-schema refusal, and additional input/runtime resource bounds.
+- Added an explicit source/asset/dependency manifest, hash-checked production lock and optional Debian CPython 3.13 amd64 wheels; no runtime data, private notes, test packages, or Mac wheels are shipped.
+- Added a root deployment controller for staged per-release environments, managed-path/account/unit refusal, atomic activation, stopped-service database/config snapshots, and explicit paired-data rollback preserving current data first.
+- Added portable archive/path/lifecycle refusal tests and real Gunicorn coverage; 81 automated tests passed. Real Debian 13 amd64 installation, reboot, synthetic update/rollback and failed-health recovery passed locally.
+- Fixed Debian systemd template/instance handling and conditional failure-state reset; rejected malformed UTF-8 input before storage.
+- Qualified actual local Relay Gateway submission, admin editing/export, grant revocation and logout denial against the installed VM services. This is not live DNS/TLS/Tailscale policy certification.
+- Documented prerequisites, loopback same-host Relay integration, SSH maintenance and explicit recovery in `docs/deployment.md`, with evidence limits in `docs/qualification.md`. No license selection or production changes.
+
+## Previous prototype work — 0.1.0
 
 ### Source documentation
 
